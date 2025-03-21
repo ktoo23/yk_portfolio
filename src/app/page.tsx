@@ -1,101 +1,193 @@
-import Image from "next/image";
+'use client';
+import React, { useState, useEffect } from 'react';
+import { AboutMe } from './_components/aboutme';
+import { Skills } from './_components/skills';
+import { Projects } from './_components/projects';
+import { Footer } from './_components/footer';
+import { Contact } from './_components/contact';
 
-export default function Home() {
+const Portfolio = () => {
+  const [activeSection, setActiveSection] = useState('home');
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [navBackground, setNavBackground] = useState('bg-transparent');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // 스크롤 위치에 따라 활성 섹션 변경
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+
+      // 스크롤 위치에 따라 네비게이션 배경 변경
+      if (scrollPosition > 100) {
+        setNavBackground('bg-white/90 backdrop-blur-md shadow-md');
+      } else {
+        setNavBackground('bg-transparent');
+      }
+
+      // 현재 보이는 섹션 감지
+      const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 200 && rect.bottom >= 200) {
+            if (!isScrolling) setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isScrolling]);
+
+  // 부드러운 스크롤 이동
+  const scrollToSection = (sectionId: string) => {
+    setIsScrolling(true);
+    setIsMobileMenuOpen(false);
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80,
+        behavior: 'smooth',
+      });
+
+      // 스크롤 애니메이션이 끝나면 상태 업데이트
+      setTimeout(() => {
+        setIsScrolling(false);
+        setActiveSection(sectionId);
+      }, 500);
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className='min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 font-sans'>
+      {/* 네비게이션 */}
+      <nav
+        className={`fixed w-full z-50 transition-all duration-300 ease-in-out ${navBackground}`}
+      >
+        <div className='max-w-6xl mx-auto px-6 py-4'>
+          <div className='flex justify-between items-center'>
+            <a
+              href='#home'
+              className='text-xl font-bold text-indigo-600'
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('home');
+              }}
+            >
+              LeeYoonKyung.dev
+            </a>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {/* 데스크탑 메뉴 */}
+            <div className='hidden md:flex space-x-8'>
+              {[
+                { id: 'about', label: 'About Me' },
+                { id: 'skills', label: 'Skills' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'contact', label: 'Contact' },
+              ].map((item) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`text-sm font-medium transition-colors duration-300 ${
+                    activeSection === item.id
+                      ? 'text-indigo-600 border-b-2 border-indigo-600'
+                      : 'text-gray-600 hover:text-indigo-600'
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.id);
+                  }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+
+            {/* 모바일 메뉴 버튼 */}
+            <div className='md:hidden'>
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className='p-2 rounded-md text-gray-600 hover:text-indigo-600 focus:outline-none'
+              >
+                <svg
+                  className='w-6 h-6'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  {isMobileMenuOpen ? (
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M6 18L18 6M6 6l12 12'
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M4 6h16M4 12h16M4 18h16'
+                    />
+                  )}
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* 모바일 메뉴 드롭다운 */}
+        {isMobileMenuOpen && (
+          <div className='md:hidden bg-white shadow-lg'>
+            <div className='px-4 py-3 space-y-2'>
+              {[
+                { id: 'about', label: 'About Me' },
+                { id: 'skills', label: 'Skills' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'contact', label: 'Contact' },
+              ].map((item) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`block px-3 py-2 rounded-md font-medium ${
+                    activeSection === item.id
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.id);
+                  }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* 메인 섹션 */}
+      <AboutMe scrollToSection={scrollToSection} />
+
+      {/* Skills 섹션 */}
+      <Skills />
+
+      {/* Projects 섹션 */}
+      <Projects />
+
+      {/* Contact 섹션 */}
+      <Contact />
+
+      {/* 푸터 */}
+      <Footer />
     </div>
   );
-}
+};
+
+export default Portfolio;
