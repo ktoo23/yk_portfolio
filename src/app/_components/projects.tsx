@@ -72,58 +72,6 @@ export const Projects = () => {
   // 프로젝트 데이터
   const projects: ProjectData[] = [
     {
-      id: 1,
-      title: '꾸부기',
-      subtitle: '사용자 맞춤 스트레칭 추천 및 관리 - 엘리스 ai spark camp',
-      image: '/images/bugi.png',
-      period: '2025.02.20 - 2025.03.01',
-      teamType: 'team',
-      description:
-        '사용자의 직업, 생활 패턴, 신체 부위 정보를 바탕으로 맞춤형 스트레칭을 추천해주는 서비스',
-      longDescription:
-        '*현재 엘리스에서 AI api 지원을 중단한 상태여서 배포를 잠시 막아둔 상태입니다.* 사용자의 직업, 생활 패턴, 신체 부위 정보를 분석하여 개인화된 스트레칭 루틴을 추천하는 웹 서비스입니다. 사용자가 쉽게 정보를 입력할 수 있도록 직관적인 인터페이스를 구현했으며, 신체 부위 선택을 위한 인터랙티브 SVG 컴포넌트를 구현했습니다.',
-      tech: [
-        'React 18',
-        'Next.js',
-        'TypeScript',
-        'Tailwind CSS',
-        'Shadcn UI',
-        'React-Hookform',
-        'Zod',
-      ],
-      responsibilities: [
-        'React-Hookform과 Zod를 활용한 강력한 폼 검증',
-        '오류 메시지의 사용자 친화적 표시로 UX 향상',
-        '인터랙티브 신체 부위 선택 UI 개발',
-        'SVG를 활용한 신체 부위 선택 컴포넌트 구현',
-        '각 부위별 path ID와 근육 명칭을 매핑하여 직관적인 UI/UX 제공',
-        '사용자 선택에 반응하는 동적 색상 변화 및 피드백 시스템 구현',
-      ],
-      features: [
-        '개인 맞춤형 스트레칭 루틴 추천',
-        '직관적인 신체 부위 선택 인터페이스',
-        '사용자 정보 기반 분석 시스템',
-        '강력한 폼 유효성 검증',
-      ],
-      challenges: [
-        'SVG 기반 인터랙티브 컴포넌트 구현의 복잡성',
-        '사용자 입력 데이터의 유효성 검증 및 오류 처리',
-      ],
-      solutions: [
-        'SVG 요소에 대한 이벤트 핸들링 최적화',
-        'React-Hookform과 Zod를 조합한 강력한 폼 검증 시스템 구축',
-      ],
-      githubLink: 'https://github.com/stretching-coach-ai/coach-web',
-      screenshots: [
-        '/images/bugi/loading.PNG',
-        '/images/bugi/main.PNG',
-        '/images/bugi/login.PNG',
-        '/images/bugi/info.PNG',
-        '/images/bugi/select.PNG',
-        '/images/bugi/recommend.PNG',
-      ],
-    },
-    {
       id: 2,
       title: '노인을 위한 키오스크는 있다',
       subtitle: '디지털 취약계층을 위한 키오스크 UI/UX 개선',
@@ -219,6 +167,7 @@ export const Projects = () => {
         '그룹 & 멤버 관리 기능 구현',
         '최적화된 검색 기능 구현',
         'Tanstack-Query를 활용한 데이터 관리',
+        '서버 액션 기반 인증 시스템 구축',
       ],
       features: [
         'CRUD 기능을 갖춘 앨범 관리 인터페이스',
@@ -227,13 +176,14 @@ export const Projects = () => {
         '권한 기반 접근 제어 시스템',
         '디바운스 처리를 통한 검색 성능 최적화',
         '메시지 수신자와 질문 내용을 결합한 확장 검색 기능',
+        '서버 컴포넌트와 서버 액션 기반의 고도화된 인증 시스템',
       ],
       challenges: [
         '다양한 사용자(노인, 가족 구성원) 요구사항 충족',
         '효율적인 데이터 캐싱 전략 수립',
         'SSR 환경에서 파일 업로드 폼 검증 이슈 해결',
         '중첩 UI 컴포넌트(DropdownMenu 내 Dialog)의 이벤트 버블링 문제',
-        '다양한 미디어 타입(이미지/오디오) 처리를 위한 통합 인터페이스 설계',
+        '서버-클라이언트 환경 차이에 따른 인증 처리 불일치',
       ],
 
       solutions: [
@@ -241,7 +191,7 @@ export const Projects = () => {
         'Tanstack Query를 활용한 서버 상태 관리와 캐싱 최적화',
         '클라이언트/서버 환경을 고려한 조건부 Zod 스키마 검증 구현',
         'preventDefault와 stopPropagation을 활용한 이벤트 전파 제어',
-        '커스텀 훅을 활용한 재사용 가능한 파일 처리 로직 설계',
+        '미들웨어에서 서버 액션 기반 인증으로 전환하여 토큰 유효성 검증 및 보안 강화',
       ],
       devNotes: [
         {
@@ -257,10 +207,10 @@ export const Projects = () => {
             'DropdownMenu 내부에서 Dialog를 열 때 발생하는 이벤트 버블링 문제와 shadcn/ui 컴포넌트의 특성을 고려한 해결책 구현',
         },
         {
-          title: '웹 음성 녹음 및 다중 미디어 처리',
-          link: 'https://zinc-coat-dea.notion.site/1bc2da80e7b5808fa918cf48942c3eab?pvs=4',
+          title: 'Next.js 인증 시스템 고도화하기',
+          link: 'https://zinc-coat-dea.notion.site/Next-js-1dc2da80e7b58091bc82f3b3f09beb19?pvs=4',
           description:
-            'MediaDevices API를 활용한 음성 녹음 기능과 이미지/오디오 파일을 통합 처리하는 커스텀 훅 설계',
+            '미들웨어에서 서버 액션 기반 인증으로 전환하여 토큰 유효성 검증 문제를 해결하고 서버-클라이언트 환경 차이를 고려한 인증 로직 설계',
         },
       ],
       githubLink: 'https://github.com/Memory-album',
@@ -280,7 +230,7 @@ export const Projects = () => {
       subtitle:
         '임보 입양 홍보 - 핌피 바이러스 사이트를 배경으로 개발하였습니다.',
       image: '/images/logo.svg',
-      period: '2024.09 - 2024.11 마무리 중 ',
+      period: '2024.09 - 2025.01 ',
       teamType: 'individual',
       demo: '/videos/bemine/시연.mp4',
       description: '유기동물 임시보호와 입양을 위한 홍보 플랫폼',
@@ -363,6 +313,58 @@ export const Projects = () => {
         '/videos/bemine/일기 상세.mp4',
         '/videos/bemine/일기 작성.mp4',
         '/videos/bemine/임보 테스트.mp4',
+      ],
+    },
+    {
+      id: 1,
+      title: '꾸부기',
+      subtitle: '사용자 맞춤 스트레칭 추천 및 관리 - 엘리스 ai spark camp',
+      image: '/images/bugi.png',
+      period: '2025.02.20 - 2025.03.01',
+      teamType: 'team',
+      description:
+        '사용자의 직업, 생활 패턴, 신체 부위 정보를 바탕으로 맞춤형 스트레칭을 추천해주는 서비스',
+      longDescription:
+        '*현재 엘리스에서 AI api 지원을 중단한 상태여서 배포를 잠시 막아둔 상태입니다.* 사용자의 직업, 생활 패턴, 신체 부위 정보를 분석하여 개인화된 스트레칭 루틴을 추천하는 웹 서비스입니다. 사용자가 쉽게 정보를 입력할 수 있도록 직관적인 인터페이스를 구현했으며, 신체 부위 선택을 위한 인터랙티브 SVG 컴포넌트를 구현했습니다.',
+      tech: [
+        'React 18',
+        'Next.js',
+        'TypeScript',
+        'Tailwind CSS',
+        'Shadcn UI',
+        'React-Hookform',
+        'Zod',
+      ],
+      responsibilities: [
+        'React-Hookform과 Zod를 활용한 강력한 폼 검증',
+        '오류 메시지의 사용자 친화적 표시로 UX 향상',
+        '인터랙티브 신체 부위 선택 UI 개발',
+        'SVG를 활용한 신체 부위 선택 컴포넌트 구현',
+        '각 부위별 path ID와 근육 명칭을 매핑하여 직관적인 UI/UX 제공',
+        '사용자 선택에 반응하는 동적 색상 변화 및 피드백 시스템 구현',
+      ],
+      features: [
+        '개인 맞춤형 스트레칭 루틴 추천',
+        '직관적인 신체 부위 선택 인터페이스',
+        '사용자 정보 기반 분석 시스템',
+        '강력한 폼 유효성 검증',
+      ],
+      challenges: [
+        'SVG 기반 인터랙티브 컴포넌트 구현의 복잡성',
+        '사용자 입력 데이터의 유효성 검증 및 오류 처리',
+      ],
+      solutions: [
+        'SVG 요소에 대한 이벤트 핸들링 최적화',
+        'React-Hookform과 Zod를 조합한 강력한 폼 검증 시스템 구축',
+      ],
+      githubLink: 'https://github.com/stretching-coach-ai/coach-web',
+      screenshots: [
+        '/images/bugi/loading.PNG',
+        '/images/bugi/main.PNG',
+        '/images/bugi/login.PNG',
+        '/images/bugi/info.PNG',
+        '/images/bugi/select.PNG',
+        '/images/bugi/recommend.PNG',
       ],
     },
   ];
