@@ -47,7 +47,7 @@ export const AboutMe = ({ scrollToSection }: Props) => {
         <div className='flex justify-center space-x-4'>
           <button
             className='px-6 py-3 text-[#007aff] cursor-pointer hover:text-[#4088d4] rounded-full'
-            onClick={() => scrollToSection('contact')}
+            onClick={() => scrollToSection('projects')}
           >
             프로젝트 보기
           </button>
