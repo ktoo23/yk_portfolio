@@ -63,7 +63,7 @@ const Portfolio = () => {
   };
 
   return (
-    <div className='min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 font-sans'>
+    <div className='min-h-screen bg-white text-gray-800 font-sans'>
       {/* 네비게이션 */}
       <nav
         className={`fixed w-full z-50 transition-all duration-300 ease-in-out ${navBackground}`}
@@ -72,7 +72,7 @@ const Portfolio = () => {
           <div className='flex justify-between items-center'>
             <a
               href='#home'
-              className='text-xl font-bold text-indigo-600'
+              className='text-xl font-bold text-[#007aff]'
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('home');
@@ -84,18 +84,17 @@ const Portfolio = () => {
             {/* 데스크탑 메뉴 */}
             <div className='hidden md:flex space-x-8'>
               {[
-                { id: 'about', label: 'About Me' },
-                { id: 'skills', label: 'Skills' },
-                { id: 'projects', label: 'Projects' },
-                { id: 'contact', label: 'Contact' },
+                { id: 'about', label: '이윤경' },
+                { id: 'skills', label: '기술' },
+                { id: 'projects', label: '프로젝트' },
               ].map((item) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}
                   className={`text-sm font-medium transition-colors duration-300 ${
                     activeSection === item.id
-                      ? 'text-indigo-600 border-b-2 border-indigo-600'
-                      : 'text-gray-600 hover:text-indigo-600'
+                      ? 'text-[#007aff] border-b-2 border-[#007aff]'
+                      : 'text-gray-600 hover:text-[#007aff]'
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -111,7 +110,7 @@ const Portfolio = () => {
             <div className='md:hidden'>
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className='p-2 rounded-md text-gray-600 hover:text-indigo-600 focus:outline-none'
+                className='p-2 rounded-md text-gray-600 hover:text-[#007aff] focus:outline-none'
               >
                 <svg
                   className='w-6 h-6'
@@ -146,18 +145,17 @@ const Portfolio = () => {
           <div className='md:hidden bg-white shadow-lg'>
             <div className='px-4 py-3 space-y-2'>
               {[
-                { id: 'about', label: 'About Me' },
-                { id: 'skills', label: 'Skills' },
-                { id: 'projects', label: 'Projects' },
-                { id: 'contact', label: 'Contact' },
+                { id: 'about', label: '이윤경' },
+                { id: 'skills', label: '기술' },
+                { id: 'projects', label: '프로젝트' },
               ].map((item) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}
                   className={`block px-3 py-2 rounded-md font-medium ${
                     activeSection === item.id
-                      ? 'bg-indigo-50 text-indigo-600'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
+                      ? 'bg-indigo-50 text-[#007aff]'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-[#007aff]'
                   }`}
                   onClick={(e) => {
                     e.preventDefault();

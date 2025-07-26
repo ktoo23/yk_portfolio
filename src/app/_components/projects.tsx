@@ -26,7 +26,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -44,6 +43,7 @@ interface ProjectData {
   image: string;
   period: string;
   description: string;
+  mainBgColor: string;
   longDescription?: string;
   responsibilities?: string[];
   tech: string[];
@@ -69,151 +69,145 @@ export const Projects = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  // 프로젝트 데이터
   const projects: ProjectData[] = [
     {
-      id: 2,
-      title: '노인을 위한 키오스크는 있다',
-      subtitle: '디지털 취약계층을 위한 키오스크 UI/UX 개선',
-      image: '/images/wiki.png',
-      period: '2024.12.04 - 2024.12.10',
+      id: 1,
+      title: '타임옥션',
+      subtitle: '지역 기반 경매 플랫폼',
+      image: '/images/TA.png',
+      period: '2025.05.30 ~ 2025.08.09',
       teamType: 'team',
+      mainBgColor: '#7251f8',
       description:
-        '디지털 취약계층을 위한 맥도날드 키오스크 UI/UX 개선 프로젝트',
+        '지역 기반 경매 플랫폼으로 사용자들이 합리적인 가격으로 물건을 거래할 수 있는 서비스',
       longDescription:
-        '이 프로젝트는 개발보다는 기획, 협업에 초점을 두었습니다. 개인이 가진 좋은 아이디어를 시각화하여 모두에게 공유하고 개선점을 찾기 위해 서로의 생각을 나눴습니다. 노인을 비롯한 디지털 취약계층이 키오스크를 편리하게 사용할 수 있도록 UI/UX를 재설계하고, 직관적인 가이드 시스템을 구현했습니다.',
+        '타임옥션은 지역 기반 경매를 통해 더 많은 사람들이 합리적인 가격으로 물건을 거래할 수 있는 플랫폼입니다. 개발 과정에서 이미지 캐싱, 실시간 알림, 검색 성능 등 다양한 기술적 문제를 마주하고 해결하며 사용자 경험을 크게 개선했습니다.',
       tech: [
-        'React 18',
-        'Vite',
+        'Next.js',
+        'React',
         'TypeScript',
-        'Tailwind CSS',
-        'Shadcn UI',
+        'Supabase',
+        'PWA',
         'Zustand',
-        'Vitest',
-        'React Testing Library',
-      ],
-      responsibilities: [
-        '가이드 메시지 관리 시스템 개발 및 개선',
-        '직관적인 메뉴 카테고리 시스템 개발',
-        '메뉴 상세 정보 컴포넌트 개발',
-        'BDD 기반 테스트 코드 작성',
-      ],
-      features: [
-        '맛 기반 카테고리(달달, 짭짤, 매콤)로 세분화된 분류',
-        '재료 정보, 알레르기 정보, 영양 정보를 포함한 직관적 UI',
-        '이미지 기반 햄버거 구성품 시각화',
-        '가독성 높은 텍스트와 색상 대비를 활용한 노년층 친화적 디자인',
-        '테이블 서비스, 라지 세트 등 생소한 용어를 안내하는 가이드 메시지',
-        '음성을 통한 메뉴 검색',
+        'Web Push API',
       ],
       challenges: [
-        '가이드 메시지 관리 시스템의 복잡성',
-        '컴포넌트 간 상태 공유 최적화',
-        '테스트 케이스 설계 및 구현의 어려움',
+        '🔸 프로필 이미지를 바꿔도 브라우저에 이전 이미지가 계속 보이는 문제',
+        '🔸 새로고침할 때만 하이드레이션 에러가 발생하는 이상한 현상',
+        '🔸 같은 사용자가 연속으로 입찰하면 이전 상위 입찰자였던 다른 사용자에게 알림이 계속 가는 문제',
+        '🔸 검색할 때마다 여러 테이블을 합치는 방식의 성능 저하 고려',
       ],
       solutions: [
-        '메시지 관리 로직을 GuidePopup 컴포넌트 내부로 이동하여 단순화',
-        'Zustand를 이용한 전역 상태 관리 최적화',
-        'BDD 기반의 테스트 전략 수립 및 구현',
+        '브라우저 캐싱 메커니즘을 분석해보니 같은 URL이면 새 이미지를 안 가져오는 것이 원인. URL에 타임스탬프를 붙이는 캐시 버스팅으로 해결',
+        'SSR과 CSR에서 Date.now() 값이 달라서 발생하는 문제였음. 서버에서는 안전한 값 사용하고 클라이언트에서 useEffect로 동적 값 적용',
+        '단순히 "현재 입찰자 제외한 최근 상위 입찰자"를 찾던 로직을 "진짜 직전 최고가 입찰자"를 찾는 로직으로 개선해서 불필요한 알림 감소',
+        '기존 empty embed 패턴으로 4번의 JOIN 연산 대신, 검색 전용 테이블을 만들고 트리거로 상품 추가/변경 시 자동 동기화하여 검색 속도 개선',
+      ],
+      features: [
+        '실시간 경매 참여 및 입찰 시스템',
+        'PWA 기반 푸시 알림 서비스 (연속 입찰 중복 알림 방지)',
+        '지역 기반 상품 검색 (검색 전용 테이블로 성능 최적화)',
+        '사용자 프로필 관리 (이미지 캐시 버스팅 적용)',
+        '경매 진행 상황 실시간 업데이트',
       ],
       devNotes: [
         {
-          title: '가이드 메시지 시스템 관리 개선',
-          link: 'https://zinc-coat-dea.notion.site/3afa240d1bf9465fb4f0bddc2b95e18f?pvs=4',
-          description: '복잡한 컴포넌트 설계에서 단순화의 중요성 체득',
+          title: '브라우저 이미지 캐싱 문제와 해결 과정',
+          link: 'https://zinc-coat-dea.notion.site/Supabase-2242da80e7b580f0bcf4ce26e6c5e1e3',
+          description:
+            'CDN과 브라우저 캐싱 메커니즘 분석부터 캐시 버스팅 구현까지',
         },
         {
-          title: '노위키 BDD',
-          link: 'https://zinc-coat-dea.notion.site/BDD-1a12da80e7b580fbb29eca90ca7cf980?pvs=4',
-          description: '사용자 행동 중심으로 기능 정리',
+          title: 'Next.js 하이드레이션 에러 디버깅',
+          link: 'https://zinc-coat-dea.notion.site/Next-js-2242da80e7b5802b84fbc8b71d474560',
+          description: 'SSR/CSR 차이점 이해하고 Date.now() 문제 해결하기',
         },
         {
-          title: '프로젝트를 마치며',
-          link: 'https://zinc-coat-dea.notion.site/401c313c9ab44ff3a0560ccf2b31aa1b?pvs=4',
-          description: '노인을 위한 키오스크는 있다 회고',
+          title: '경매 알림 시스템의 비즈니스 로직 개선',
+          link: 'https://zinc-coat-dea.notion.site/2332da80e7b5807cafeaf9cc9fffe386',
+          description: '사용자 행동 패턴을 고려한 알림 로직 설계',
+        },
+        {
+          title: '검색 기능 구현하기',
+          link: 'https://zinc-coat-dea.notion.site/Empty-embed-1-22c2da80e7b58020aab8c2c6e307ed8c',
+          description: 'Empty Embed 패턴으로 검색 기능 구현하기',
+        },
+        {
+          title: '검색 성능 개선하기',
+          link: 'https://zinc-coat-dea.notion.site/2-22e2da80e7b58004b195c5bdaae3b825',
+          description: 'Empty Embed 패턴의 한계와 검색 전용 테이블 아키텍처',
         },
       ],
-      deployLink: 'https://nowiki-yk.vercel.app',
-      githubLink: 'https://github.com/ktoo23/nowiki-test',
-      screenshots: [
-        '/images/nowiki/main.png',
-        '/images/nowiki/menulist.png',
-        '/images/nowiki/menudetail1.png',
-        '/images/nowiki/result.png',
+      githubLink: 'https://github.com/ktoo23/KFE3-e2e-Chwee-up-hajah',
+      deployLink: 'https://kfe-3-e2e-chwee-up-hajah-web.vercel.app',
+      videos: [
+        '/videos/chee/login.gif',
+        '/videos/chee/main.gif',
+        '/videos/chee/auction-list.gif',
+        '/videos/chee/auction-detail.gif',
+        '/videos/chee/auction-add.gif',
+        '/videos/chee/chat-list.gif',
+        '/videos/chee/profile.gif',
       ],
     },
+
     {
-      id: 3,
+      id: 2,
       title: 'Min:i',
-      subtitle: '가족 추억 앨범',
+      subtitle: '추억 앨범 - AI 기반 가족 유대감 강화 서비스',
       image: '/images/mini.png',
-      period: '진행 중',
+      period: '2024.09.01 ~ 2025.02',
       teamType: 'team',
+      mainBgColor: '#DAE2FF',
       description:
-        '회상 요법 기반 질문과 답변을 통한 노인 인지 기능 향상 및 가족 유대감 강화 디지털 앨범 서비스',
+        'AI 기반 사진 분석과 회상 요법을 통한 노인 기능 향상 및 가족 유대감 강화 디지털 앨범 서비스',
       longDescription:
-        'Min:i는 노인 인지 기능 향상과 가족 간 유대감 강화를 위한 디지털 앨범 서비스입니다. 회상 요법을 기반으로 한 질문과 답변을 통해 노인들의 기억을 자극하고 가족들과 추억을 공유할 수 있게 도와줍니다. 직관적인 UX와 효율적인 데이터 관리로 사용자 경험을 극대화했습니다.',
+        'Min:i는 노인 인지 기능 향상과 가족 간 유대감 강화를 위한 혁신적인 디지털 앨범 서비스입니다. AI가 사진을 분석해서 자동으로 질문을 만들어주고, 답변을 바탕으로 개인화된 스토리를 생성합니다. 개발 과정에서 인증 시스템과 UI 컴포넌트의 복잡한 문제들을 차근차근 해결해나갔습니다.',
       tech: [
         'React',
         'Next.js',
         'TypeScript',
         'Tanstack Query',
-        'React-Hookform',
+        'Tailwind CSS',
+        'shadcn/ui',
+        'Zustand',
+        'React Hook Form',
         'Zod',
       ],
-      responsibilities: [
-        '앨범 관리 시스템 구현',
-        '질문 & 답변 관리 시스템 개발',
-        '그룹 & 멤버 관리 기능 구현',
-        '최적화된 검색 기능 구현',
-        'Tanstack-Query를 활용한 데이터 관리',
-        '서버 액션 기반 인증 시스템 구축',
+      challenges: [
+        '🔸 로그인 상태는 정상인데 서버 로그에는 "로그인 필요" 에러가 계속 뜨는 문제',
+        '🔸 드롭다운 메뉴에서 다이얼로그를 열려고 하면 메뉴가 바로 닫혀버리는 문제',
+        '🔸 모든 페이지마다 비슷한 margin, padding 코드가 중복되어 관리가 어려운 문제',
+        '🔸 토큰이 만료되어도 캐시 때문에 UI상으로는 정상으로 보이는 문제',
+      ],
+      solutions: [
+        '서버 환경에서는 브라우저처럼 자동으로 쿠키가 안 붙는다는 걸 알게 됨. headers에 쿠키를 명시적으로 넣어서 해결',
+        'shadcn/ui의 DropdownMenuItem은 클릭하면 자동으로 닫히는 기본 동작이 있었음. preventDefault로 이 동작을 막고 stopPropagation으로 이벤트 전파 차단',
+        'SCSS 변수를 만들어서 Next.js 설정으로 모든 컴포넌트에서 자동 import되도록 설정. 중복 코드 60% 감소',
+        '미들웨어 대신 서버 액션으로 바꿔서 매번 실제 API 호출로 토큰 유효성을 검증하도록 개선',
       ],
       features: [
-        'CRUD 기능을 갖춘 앨범 관리 인터페이스',
-        '질문 생성 및 답변 관리 워크플로우',
-        '초대, 삭제, 수정 등 그룹 관리 기능',
-        '권한 기반 접근 제어 시스템',
-        '디바운스 처리를 통한 검색 성능 최적화',
-        '메시지 수신자와 질문 내용을 결합한 확장 검색 기능',
-        '서버 컴포넌트와 서버 액션 기반의 고도화된 인증 시스템',
-      ],
-      challenges: [
-        '다양한 사용자(노인, 가족 구성원) 요구사항 충족',
-        '효율적인 데이터 캐싱 전략 수립',
-        'SSR 환경에서 파일 업로드 폼 검증 이슈 해결',
-        '중첩 UI 컴포넌트(DropdownMenu 내 Dialog)의 이벤트 버블링 문제',
-        '서버-클라이언트 환경 차이에 따른 인증 처리 불일치',
-      ],
-
-      solutions: [
-        '사용자 경험을 고려한 직관적인 UI/UX 설계',
-        'Tanstack Query를 활용한 서버 상태 관리와 캐싱 최적화',
-        '클라이언트/서버 환경을 고려한 조건부 Zod 스키마 검증 구현',
-        'preventDefault와 stopPropagation을 활용한 이벤트 전파 제어',
-        '미들웨어에서 서버 액션 기반 인증으로 전환하여 토큰 유효성 검증 및 보안 강화',
+        'AI 기반 사진 분석으로 자동 질문 생성',
+        '사용자 답변 기반 개인화된 스토리텔링',
+        'CRUD 기능을 갖춘 앨범 관리',
+        '그룹 초대/삭제/권한 관리',
+        '회상 요법을 활용한 인지 기능 향상 콘텐츠',
       ],
       devNotes: [
         {
-          title: 'Next.js에서 파일 업로드 폼 검증하기',
-          link: 'https://zinc-coat-dea.notion.site/Next-js-13b2da80e7b581139108ca0904ebbf54?pvs=4',
-          description:
-            'SSR 환경에서 FileList 객체 검증 시 발생하는 문제와 Zod를 활용한 해결 방법',
-        },
-        {
-          title: '중첩 UI 컴포넌트의 이벤트 버블링 해결하기',
-          link: 'https://zinc-coat-dea.notion.site/1932da80e7b5805d872ec325a9c16643?pvs=4',
-          description:
-            'DropdownMenu 내부에서 Dialog를 열 때 발생하는 이벤트 버블링 문제와 shadcn/ui 컴포넌트의 특성을 고려한 해결책 구현',
-        },
-        {
-          title: 'Next.js 인증 시스템 고도화하기',
+          title: 'Next.js 서버-클라이언트 쿠키 전달 문제 해결',
           link: 'https://zinc-coat-dea.notion.site/Next-js-1dc2da80e7b58091bc82f3b3f09beb19?pvs=4',
           description:
-            '미들웨어에서 서버 액션 기반 인증으로 전환하여 토큰 유효성 검증 문제를 해결하고 서버-클라이언트 환경 차이를 고려한 인증 로직 설계',
+            '브라우저와 서버 환경의 차이점을 이해하고 인증 로직 개선하기',
+        },
+        {
+          title: 'shadcn/ui 컴포넌트 이벤트 버블링 해결기',
+          link: 'https://zinc-coat-dea.notion.site/1932da80e7b5805d872ec325a9c16643?pvs=4',
+          description: 'preventDefault와 stopPropagation의 정확한 사용법',
         },
       ],
       githubLink: 'https://github.com/Memory-album',
+      deployLink: 'https://min-i.vercel.app',
       screenshots: [
         '/images/mini/start.png',
         '/images/mini/main.png',
@@ -224,18 +218,19 @@ export const Projects = () => {
         '/images/mini/result.png',
       ],
     },
+
     {
-      id: 4,
+      id: 3,
       title: '내 가족이 되',
-      subtitle:
-        '임보 입양 홍보 - 핌피 바이러스 사이트를 배경으로 개발하였습니다.',
+      subtitle: '임보 입양 홍보 사이트',
       image: '/images/logo.svg',
-      period: '2024.09 - 2025.01 ',
+      period: '2024.09 ~ 2025.01',
       teamType: 'individual',
+      mainBgColor: '#92719f',
       demo: '/videos/bemine/시연.mp4',
       description: '유기동물 임시보호와 입양을 위한 홍보 플랫폼',
       longDescription:
-        '내 가족이 되는 유기동물 임시보호와 입양을 촉진하기 위한 홍보 플랫폼입니다. 인터랙티브한 게시글 작성 도구와 임보 유형 테스트를 통해 임보에 중요한 요소를 얼마나 갖추고 있는지 평가할 수 있습니다. 또한 이 개인 프로젝트에서는 사용자를 위한 웹 접근성을 고려했습니다. ',
+        '유기동물 임보와 입양을 촉진하기 위한 플랫폼입니다. "기존 프로젝트들은 다 비슷한 기능만 하고 있는데, 새로운 걸 해보고 싶다"는 생각으로 인스타그램 스토리 같은 이미지 편집 기능에 도전했습니다. 공식 문서만 보고 새로운 라이브러리를 익혀가고 커스텀도 해보며 완성한 프로젝트입니다.',
       tech: [
         'React',
         'Next.js',
@@ -245,63 +240,40 @@ export const Projects = () => {
         'Tanstack Query',
         'Tldraw',
         'Quill',
-        'React-Hookform',
+        'React Hook Form',
         'Zod',
         'Auth.js',
         'MSW',
-        'Express',
-      ],
-      responsibilities: [
-        '인터랙티브 게시글 작성 시스템 개발',
-        '최적화된 게시글 목록 구현',
-        '반응형 디자인 및 UI/UX 최적화',
-        '웹 접근성 개선',
-        '소셜 로그인 및 인증 시스템 구현',
-        'MSW를 통한 백엔드 연동 및 데이터 관리',
-      ],
-      features: [
-        'Tldraw 에디터 통합으로 인스타그램 스토리와 유사한 이미지 편집 기능',
-        'Quill 에디터와 emoji-mart를 활용한 풍부한 텍스트 편집 환경',
-        '무한 스크롤 + throttle 적용으로 성능 최적화',
-        'SCSS mixins과 constants를 활용한 일관된 디자인 시스템',
-        '웹 접근성을 고려한 시맨틱 태그 사용 및 키보드 탐색을 위한 포커스 표시기 적용',
-        'Auth.js를 활용한 안전한 인증 플로우',
       ],
       challenges: [
-        '다양한 비율의 사용자 업로드 이미지를 고정 크기 에디터에서 효과적으로 표시하기',
-        '인피니트 스크롤링 구현 시 API 중복 호출로 인한 성능 저하',
-        '여러 스타일 속성과 변수를 여러 컴포넌트에서 일관되게 관리하는 어려움',
-        '고정 크기의 이미지가 아닌 비율에 따른 게시글 이미지 표시',
+        '🔸 기존 단순 이미지 업로드만으로는 사용자들의 관심을 끌기 어려울 것 같다는 고민',
+        '🔸 세로 이미지, 가로 이미지가 모두 같은 크기 박스에 들어가서 어색하게 보이는 문제',
+        '🔸 Quill 에디터가 서버사이드 렌더링에서 에러가 나는 문제',
+        '🔸 백엔드가 없어서 로그인, 데이터 관리 등을 테스트할 수 없는 문제',
       ],
       solutions: [
-        '이미지 비율과 중앙 정렬을 위한 에디터의 createShape, 카메라 setCameraOptions 설정',
-        'Custom Throttle Hook 개발을 통한 API 호출 최적화',
-        'SCSS 모듈 시스템과 Next.js 설정을 활용한 전역 스타일 변수 관리 구현',
-        '이미지 비율 계산 함수와 컨테이너에 맞추도록 구현',
+        '인스타그램 스토리처럼 이미지를 꾸밀 수 있는 기능을 만들어보자고 결심. Tldraw 라이브러리 공식문서를 보며 커스텀 에디터 구현',
+        '이미지를 업로드할 때 naturalWidth/naturalHeight로 실제 비율을 계산해서 landscape, portrait, square로 분류. CSS aspect-ratio로 각각 다른 비율 적용',
+        'dynamic import로 클라이언트에서만 로드되도록 설정하고 useRef로 생명주기 관리',
+        'MSW로 완전한 가짜 백엔드 서버 구축. 로그인부터 CRUD까지 모든 기능을 프론트엔드에서 독립적으로 개발',
+      ],
+      features: [
+        'Tldraw 기반 인스타그램 스토리 유사 이미지 편집',
+        '이미지 비율별 반응형 레이아웃 (landscape/portrait/square)',
+        'Quill 에디터와 이모지를 활용한 풍부한 텍스트 작성',
+        'MSW로 완전한 백엔드 시뮬레이션',
+        'Auth.js 기반 소셜 로그인',
       ],
       devNotes: [
         {
-          title: 'tldraw 라이브러리로 인스타 스토리 이미지 편집하기',
+          title: 'Tldraw로 인스타 스토리 만들기 도전기',
           link: 'https://zinc-coat-dea.notion.site/tldraw-1832da80e7b5801ab45fc9b5e8f4fd2a?pvs=4',
-          description: 'tldraw 라이브러리를 통한 이미지 편집 기능',
+          description: '공식문서만으로 새로운 라이브러리 마스터하기',
         },
         {
-          title: '스타일 시스템 최적화 - Next.js에 scss 모듈 관리하기',
-          link: 'https://zinc-coat-dea.notion.site/Nextjs-scss-4677a445a30d4386bbe5b0ac5d3948cf?pvs=4',
-          description:
-            'SCSS 변수와 믹스인을 모든 컴포넌트에서 효율적으로 사용할 수 있도록 설정',
-        },
-        {
-          title: '반응형 이미지 처리 - 게시글 이미지 비율별로 보여주기',
+          title: '이미지 비율 처리의 모든 것',
           link: 'https://zinc-coat-dea.notion.site/Nextjs-Image-10e2da80e7b580dfb040db2c83d52d6d?pvs=4',
-          description:
-            '고정된 이미지 크기가 아닌 여러 이미지 비율을 고려하여 게시글에 표시',
-        },
-        {
-          title: '인피니트 스크롤 최적화: Throttle 구현',
-          link: 'https://zinc-coat-dea.notion.site/throttle-1142da80e7b5808e8b9bf2ea3759431f?pvs=4',
-          description:
-            'tanstack query의 useInfiniteQuery 사용 시 중복 호출 문제를 해결하기 위한 custom throttle hook 설계 및 구현',
+          description: 'padding-bottom에서 aspect-ratio로 진화한 과정',
         },
       ],
       githubLink: 'https://github.com/ktoo23/be_mine',
@@ -315,56 +287,65 @@ export const Projects = () => {
         '/videos/bemine/임보 테스트.mp4',
       ],
     },
+
     {
-      id: 1,
-      title: '꾸부기',
-      subtitle: '사용자 맞춤 스트레칭 추천 및 관리 - 엘리스 ai spark camp',
-      image: '/images/bugi.png',
-      period: '2025.02.20 - 2025.03.01',
+      id: 4,
+      title: '노인을 위한 키오스크는 있다',
+      subtitle: '디지털 취약계층을 위한 키오스크 UI/UX 개선',
+      image: '/images/wiki.png',
+      period: '2024.12.04 ~ 2024.12.09',
       teamType: 'team',
+      mainBgColor: '#ffc72c',
       description:
-        '사용자의 직업, 생활 패턴, 신체 부위 정보를 바탕으로 맞춤형 스트레칭을 추천해주는 서비스',
+        '디지털 취약계층을 위한 맥도날드 키오스크 UI/UX 개선 프로젝트',
       longDescription:
-        '*현재 엘리스에서 AI api 지원을 중단한 상태여서 배포를 잠시 막아둔 상태입니다.* 사용자의 직업, 생활 패턴, 신체 부위 정보를 분석하여 개인화된 스트레칭 루틴을 추천하는 웹 서비스입니다. 사용자가 쉽게 정보를 입력할 수 있도록 직관적인 인터페이스를 구현했으며, 신체 부위 선택을 위한 인터랙티브 SVG 컴포넌트를 구현했습니다.',
+        '디지털 취약계층을 위한 키오스크 개선 프로젝트입니다. 개발 중간에 디자이너가 이탈하고 개발 시간이 2일밖에 없는 위기 상황이 발생했지만, 팀원들과 함께 방향을 재정립하여 완성했습니다. 아르바이트 경험을 바탕으로 실제 노인 고객들의 주문 패턴을 분석해 반영했습니다.',
       tech: [
-        'React 18',
-        'Next.js',
+        'React',
         'TypeScript',
         'Tailwind CSS',
-        'Shadcn UI',
-        'React-Hookform',
-        'Zod',
-      ],
-      responsibilities: [
-        'React-Hookform과 Zod를 활용한 강력한 폼 검증',
-        '오류 메시지의 사용자 친화적 표시로 UX 향상',
-        '인터랙티브 신체 부위 선택 UI 개발',
-        'SVG를 활용한 신체 부위 선택 컴포넌트 구현',
-        '각 부위별 path ID와 근육 명칭을 매핑하여 직관적인 UI/UX 제공',
-        '사용자 선택에 반응하는 동적 색상 변화 및 피드백 시스템 구현',
-      ],
-      features: [
-        '개인 맞춤형 스트레칭 루틴 추천',
-        '직관적인 신체 부위 선택 인터페이스',
-        '사용자 정보 기반 분석 시스템',
-        '강력한 폼 유효성 검증',
+        'shadcn/ui',
+        'Vitest',
+        'Zustand',
       ],
       challenges: [
-        'SVG 기반 인터랙티브 컴포넌트 구현의 복잡성',
-        '사용자 입력 데이터의 유효성 검증 및 오류 처리',
+        '🔸 프로젝트 중반에 디자이너가 갑자기 이탈하면서 방향을 잃은 상황',
+        '🔸 개발 시간이 단 2일밖에 남지 않은 극한의 시간 제약',
+        '🔸 처음에는 "기능을 줄이면 쉬워질 것"이라고 생각했는데 실제로는 그렇지 않다는 깨달음',
+        '🔸 가이드 메시지를 관리하는 로직이 복잡해서 유지보수가 어려운 문제',
       ],
       solutions: [
-        'SVG 요소에 대한 이벤트 핸들링 최적화',
-        'React-Hookform과 Zod를 조합한 강력한 폼 검증 시스템 구축',
+        '팀 미팅을 통해 "간소화가 곧 편의성은 아니다"는 인사이트 도출. 기능을 줄이는 게 아니라 설명을 추가하는 방향으로 전환',
+        '남은 시간을 고려해 역할을 재분배하고 핵심 기능에 집중. 아르바이트 경험을 바탕으로 "맛 기반 카테고리" 아이디어 제안',
+        '실제 매장에서 고객들이 "이거 매워요?", "달달한 거 없어요?" 같은 질문을 많이 하는 걸 보고 맛 기반으로 메뉴를 분류',
+        'Custom Hook으로 복잡하게 만들었던 가이드 메시지 관리를 컴포넌트 내부로 이동시켜 단순화',
       ],
-      githubLink: 'https://github.com/stretching-coach-ai/coach-web',
+      features: [
+        '맛 기반 메뉴 카테고리 (달달, 짭짤, 매콤)',
+        '생소한 용어 설명 가이드 (테이블 서비스, 라지 세트 등)',
+        '이미지 기반 햄버거 구성품 시각화',
+        '노년층 친화적 큰 글씨와 색상 대비',
+        '음성 검색 기능',
+      ],
+      devNotes: [
+        {
+          title: '위기 상황에서 팀을 이끈 경험',
+          link: 'https://zinc-coat-dea.notion.site/401c313c9ab44ff3a0560ccf2b31aa1b?pvs=4',
+          description: '디자이너 이탈 상황에서 프로젝트를 완성하기까지',
+        },
+        {
+          title: '가이드 메시지 시스템 단순화하기',
+          link: 'https://zinc-coat-dea.notion.site/3afa240d1bf9465fb4f0bddc2b95e18f?pvs=4',
+          description: '복잡한 Custom Hook에서 간단한 컴포넌트로',
+        },
+      ],
+      deployLink: 'https://nowiki-yk.vercel.app',
+      githubLink: 'https://github.com/ktoo23/nowiki-test',
       screenshots: [
-        '/images/bugi/loading.PNG',
-        '/images/bugi/main.PNG',
-        '/images/bugi/login.PNG',
-        '/images/bugi/info.PNG',
-        '/images/bugi/select.PNG',
-        '/images/bugi/recommend.PNG',
+        '/images/nowiki/main.png',
+        '/images/nowiki/menulist.png',
+        '/images/nowiki/menudetail1.png',
+        '/images/nowiki/result.png',
       ],
     },
   ];
@@ -379,11 +360,10 @@ export const Projects = () => {
     <section id='projects' className='py-20 px-8'>
       <div className='max-w-6xl mx-auto'>
         <div className='text-center mb-16'>
-          <h2 className='text-3xl font-bold mb-4'>Projects</h2>
-          <div className='w-20 h-1.5 bg-indigo-600 mx-auto rounded-full'></div>
+          <h2 className='text-3xl font-bold mb-4'>프로젝트</h2>
+          <div className='w-20 h-1.5 bg-[#007aff] mx-auto rounded-full'></div>
           <p className='mt-4 text-gray-600 max-w-2xl mx-auto'>
-            다양한 프로젝트를 통해 쌓은 경험을 소개합니다. 각 프로젝트는 문제
-            해결과 사용자 경험 향상에 중점을 두고 개발했습니다.
+            다양한 프로젝트를 통해 쌓은 경험을 소개합니다.
           </p>
         </div>
 
@@ -391,35 +371,30 @@ export const Projects = () => {
           {projects.map((project) => (
             <Card
               key={project.id}
-              className='overflow-hidden group hover:shadow-lg transition-all duration-300 h-full flex flex-col'
+              onClick={() => handleProjectClick(project)}
+              className='hover:bg-neutral-100 overflow-hidden group cursor-pointer transition-all duration-200 h-full flex flex-col'
             >
               <div className='overflow-hidden w-full h-48 relative'>
                 <img
                   src={project.image}
                   alt={project.title}
-                  className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+                  className='w-full h-full object-cover'
                 />
                 {project.teamType === 'team' && (
-                  <div className='absolute top-2 right-2 bg-indigo-600 text-white px-2 py-1 rounded-md text-xs flex items-center'>
-                    <Users size={12} className='mr-1' />팀 프로젝트
+                  <div className='absolute top-1 left-5 bg-[#007aff] text-white px-3 py-2 rounded-full text-xs flex items-center'>
+                    <Users size={12} className='mr-1' />팀
                   </div>
                 )}
                 {project.teamType === 'individual' && (
-                  <div className='absolute top-2 right-2 bg-emerald-600 text-white px-2 py-1 rounded-md text-xs flex items-center'>
+                  <div className='absolute top-2 left-5 bg-emerald-600 text-white  px-3 py-2 rounded-full text-xs flex items-center'>
                     <FileText size={12} className='mr-1' />
-                    개인 프로젝트
+                    개인
                   </div>
                 )}
               </div>
 
               <CardHeader>
                 <CardTitle className='text-xl'>{project.title}</CardTitle>
-                <CardDescription className='flex items-center justify-between'>
-                  <span className='flex items-center'>
-                    <Calendar size={14} className='mr-1 text-indigo-600' />
-                    <span>{project.period}</span>
-                  </span>
-                </CardDescription>
                 {project.subtitle && (
                   <p className='text-sm text-gray-500 italic mt-1'>
                     {project.subtitle}
@@ -436,7 +411,7 @@ export const Projects = () => {
                     <Badge
                       key={index}
                       variant='secondary'
-                      className='bg-indigo-100 hover:bg-indigo-200 text-indigo-700'
+                      className='bg-indigo-100 hover:bg-indigo-200 text-[#007aff]'
                     >
                       {tech}
                     </Badge>
@@ -448,15 +423,6 @@ export const Projects = () => {
                   )}
                 </div>
               </CardContent>
-
-              <CardFooter className='border-t pt-4'>
-                <Button
-                  onClick={() => handleProjectClick(project)}
-                  className='w-full bg-indigo-600 hover:bg-indigo-700'
-                >
-                  자세히 보기
-                </Button>
-              </CardFooter>
             </Card>
           ))}
         </div>
@@ -467,10 +433,10 @@ export const Projects = () => {
         {selectedProject && (
           <DialogContent className='sm:max-w-4xl max-h-[90vh] overflow-y-auto'>
             <DialogHeader>
-              <DialogTitle className='text-2xl font-bold text-indigo-700'>
+              <DialogTitle className='text-2xl font-bold'>
                 {selectedProject.title}
                 {selectedProject.teamType === 'team' ? (
-                  <Badge className='ml-2 bg-indigo-100 text-indigo-700'>
+                  <Badge className='ml-2 bg-indigo-100 text-[#4088d4]'>
                     팀 프로젝트
                   </Badge>
                 ) : (
@@ -479,7 +445,7 @@ export const Projects = () => {
                   </Badge>
                 )}
               </DialogTitle>
-              <DialogDescription className='flex items-center text-indigo-600'>
+              <DialogDescription className='flex items-center'>
                 <Calendar size={16} className='mr-2' />
                 {selectedProject.period}
               </DialogDescription>
@@ -543,7 +509,7 @@ export const Projects = () => {
                         <h3 className='text-lg font-semibold mb-2 flex items-center'>
                           <Briefcase
                             size={18}
-                            className='mr-2 text-indigo-600'
+                            className='mr-2 text-[#007aff]'
                           />
                           My Role
                         </h3>
@@ -551,7 +517,7 @@ export const Projects = () => {
                           {selectedProject.responsibilities.map(
                             (responsibility, index) => (
                               <li key={index} className='flex items-start'>
-                                <span className='mr-2 text-indigo-500 font-bold'>
+                                <span className='mr-2 text-[#007aff] font-bold'>
                                   •
                                 </span>
                                 <span>{responsibility}</span>
@@ -564,14 +530,14 @@ export const Projects = () => {
 
                   <div>
                     <h3 className='text-lg font-semibold mb-2 flex items-center'>
-                      <Code size={18} className='mr-2 text-indigo-600' />
+                      <Code size={18} className='mr-2 text-[#007aff]' />
                       Technologies
                     </h3>
                     <div className='flex flex-wrap gap-2'>
                       {selectedProject.tech.map((tech, index) => (
                         <Badge
                           key={index}
-                          className='bg-indigo-100 text-indigo-700'
+                          className='bg-indigo-100 text-[#4088d4]'
                         >
                           {tech}
                         </Badge>
@@ -616,7 +582,6 @@ export const Projects = () => {
                     <ul className='space-y-2'>
                       {selectedProject.challenges?.map((challenge, index) => (
                         <li key={index} className='flex items-start'>
-                          <span className='mr-2 text-red-500 font-bold'>•</span>
                           <span>{challenge}</span>
                         </li>
                       ))}
@@ -679,9 +644,9 @@ export const Projects = () => {
               <Button
                 asChild
                 className={cn(
-                  'flex-1 bg-indigo-600 hover:bg-indigo-700',
+                  'flex-1 bg-[#007aff] hover:bg-[#4088d4]',
                   !selectedProject.deployLink &&
-                    'cursor-not-allowed bg-indigo-400 hover:bg-indigo-400',
+                    'cursor-not-allowed bg-[#4088d4] hover:bg-[#4088d4]',
                 )}
                 disabled={!selectedProject.deployLink}
               >
@@ -700,7 +665,7 @@ export const Projects = () => {
                 <Button
                   asChild
                   variant='outline'
-                  className='flex-1 border-indigo-600 text-indigo-600 hover:bg-indigo-50'
+                  className='flex-1 border-[#007aff] text-[#007aff] hover:bg-indigo-50'
                 >
                   <a
                     href={selectedProject.githubLink}
