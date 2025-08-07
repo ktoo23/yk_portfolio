@@ -30,9 +30,9 @@ export const AboutMe = ({ scrollToSection }: Props) => {
         <div className='space-y-6 max-w-2xl mx-auto mb-10'>
           <div className='bg-white p-6 rounded-2xl rounded-tl-none relative border-1 border-indigo-100 text-left'>
             <p className='text-gray-700 leading-relaxed'>
-              <b>기술</b>과 <b>공감</b>을 담으려 노력하는 프론트엔드
-              개발자입니다. 디지털 접근성, 동물 복지와 같은 사회적 가치에
-              공감하며 기술로 이를 해결하는 프로젝트들을 이어왔습니다.
+              팀 프로젝트에서는 각자의 해결 방식을 공유하며 최선의 방식을
+              도출하는 방식을 좋아하고, 상대방의 입장을 고려하며 건설적인 소통을
+              지향해요.
             </p>
           </div>
 
